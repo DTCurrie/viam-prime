@@ -1,90 +1,120 @@
-<svelte:options immutable tag='v-button-internal' />
+<svelte:options immutable tag="v-button-internal" />
 
-<script lang='ts'>
+<script lang="ts">
+  // Added temporarily because <svelte:element> does not recognize "text" as a valid prop
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-nocheck
 
-// Added temporarily because <svelte:element> does not recognize "text" as a valid prop
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
+  type Variants =
+    | "primary"
+    // TODO: Remove deprecated inverse-primary
+    | "inverse-primary"
+    | "outline-primary"
+    | "danger"
+    | "outline-danger"
+    | "success"
+    | "outline-success"
+    | "icon"
+    | "icon-danger"
+    | "icon-success";
 
-type Variants = 'primary' | 'inverse-primary' | 'danger' | 'outline-danger' | 'success' | 'icon'
+  import cx from "classnames";
+  import { get_current_component } from "svelte/internal";
+  import { htmlToBoolean } from "../../lib/boolean";
+  import { addStyles } from "../../lib/index";
 
-import cx from 'classnames';
-import { get_current_component } from 'svelte/internal';
-import { htmlToBoolean } from '../../lib/boolean';
-import { addStyles } from '../../lib/index';
+  export let disabled = "false";
+  export let type: "button" | "submit" | "reset" = "button";
+  export let variant: Variants = "primary";
+  export let label = "";
+  export let title = "";
+  export let icon = "";
+  export let size = "base";
+  export let tooltip = "";
 
-export let disabled = 'false';
-export let type: 'button' | 'submit' | 'reset' = 'button';
-export let variant: Variants = 'primary';
-export let label = '';
-export let title = '';
-export let icon = '';
-export let size = 'base';
-export let tooltip = '';
+  addStyles();
 
-addStyles();
+  let isDisabled: boolean;
 
-let isDisabled: boolean;
+  $: isDisabled = htmlToBoolean(disabled, "disabled");
+  $: isIconVariant = variant.includes("icon");
 
-$: isDisabled = htmlToBoolean(disabled, 'disabled');
+  // @TODO switch to <svelte:this bind:this={component}> https://github.com/sveltejs/rfcs/pull/58
+  const component = get_current_component() as HTMLElement & {
+    internals: ElementInternals;
+  };
 
-// @TODO switch to <svelte:this bind:this={component}> https://github.com/sveltejs/rfcs/pull/58
-const component = get_current_component() as HTMLElement & { internals: ElementInternals };
-const internals = component.attachInternals();
+  const internals = component.attachInternals();
 
-const handleClick = () => {
-  const { form } = internals;
+  const handleClick = () => {
+    if (isDisabled) {
+      return;
+    }
 
-  if (form?.requestSubmit) {
-    form.requestSubmit();
-  } else {
-    form?.submit();
-  }
-};
+    const { form } = internals;
 
-const handleParentClick = (event: PointerEvent) => {
-  event.stopImmediatePropagation();
-};
+    if (form?.requestSubmit) {
+      form.requestSubmit();
+    } else {
+      form?.submit();
+    }
+  };
 
+  const handleParentClick = (event: PointerEvent) => {
+    event.stopImmediatePropagation();
+  };
 </script>
-
-<style>
-  :host { display: inline-block !important }
-</style>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <svelte:element
-  this={tooltip ? 'v-tooltip' : 'span'}
+  this={tooltip ? "v-tooltip" : "span"}
   text={tooltip}
   on:click={isDisabled ? handleParentClick : undefined}
 >
   <button
     {type}
-    aria-label={variant === 'icon' ? label : undefined}
+    aria-label={variant === "icon" ? label : undefined}
     aria-disabled={isDisabled ? true : undefined}
-    title={title}
-    class={cx('will-change-transform hover:scale-105 motion-safe:transition-transform', {
-      'inline-flex items-center justify-center gap-1.5 py-1.5 px-2 text-xs border': variant !== 'icon',
-      'cursor-not-allowed !opacity-50 pointer-events-none': isDisabled,
-      'bg-white border-black': variant === 'primary',
-      'bg-black border-black text-white': variant === 'inverse-primary',
-      'bg-red/90 text-white border-red/90': variant === 'danger',
-      'bg-green/90 border-green/90 text-white': variant === 'success',
-      'bg-white border-red/90 text-red/90': variant === 'outline-danger',
-    })}
+    {title}
+    class={cx(
+      "will-change-transform hover:scale-105 motion-safe:transition-transform",
+      {
+        "inline-flex items-center justify-center gap-1.5 py-1.5 px-2 text-xs border":
+          !isIconVariant,
+        "cursor-not-allowed !opacity-50": isDisabled,
+        "bg-black border-black text-white":
+          // TODO: Remove deprecated inverse-primary
+          variant === "primary" || variant === "inverse-primary",
+        "bg-white border-black text-black": variant === "outline-primary",
+        "bg-red/90 text-white border-red/90": variant === "danger",
+        "bg-white border-red/90 text-red/90": variant === "outline-danger",
+        "bg-green/90 border-green/90 text-white": variant === "success",
+        "bg-white border-green/90 text-green/90": variant === "outline-success",
+      }
+    )}
     on:click={handleClick}
   >
     {#if icon}
       <i
-        aria-hidden='true'
-        class='icon-{icon} text-{size}'
+        aria-hidden="true"
+        class={cx(`icon-${icon} text-${size}`, {
+          "text-black": variant === "icon",
+          "text-red/90": variant === "icon-danger",
+          "text-green/90": variant === "icon-success",
+        })}
       />
     {/if}
 
-    {#if variant !== 'icon'}
+    {#if !isIconVariant}
       <span class="mx-auto">
         {label}
       </span>
     {/if}
   </button>
 </svelte:element>
+
+<style>
+  :host {
+    display: inline-block !important;
+  }
+</style>

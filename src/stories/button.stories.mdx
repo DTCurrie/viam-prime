@@ -1,28 +1,35 @@
-import { Canvas, Meta, Story } from '@storybook/addon-docs'
+import { Canvas, Meta, Story } from "@storybook/addon-docs";
 
 <Meta
-  title='Elements/Button'
+  title="Elements/Button"
   parameters={{
     actions: {
-      handles: ['click'],
+      handles: ["click"],
     },
   }}
   argTypes={{
     label: {
-      description: 'Text displayed to users',
-      table: { defaultValue: { summary: '' } }
+      description: "Text displayed to users",
+      table: { defaultValue: { summary: "" } },
     },
     variant: {
-      description: 'The communicated action type of the button',
-      control: 'select',
-      options: ['primary', 'inverse-primary', 'success', 'danger', 'outline-danger'],
-      table: { defaultValue: { summary: 'primary' } }
+      description: "The communicated action type of the button",
+      control: "select",
+      options: [
+        "primary",
+        "outline-primary",
+        "danger",
+        "outline-danger",
+        "success",
+        "outline-success",
+      ],
+      table: { defaultValue: { summary: "primary" } },
     },
     type: {
-      description: 'The type attribute for the button',
-      control: 'select',
-      options: [ 'button', 'submit', 'reset'],
-      table: { defaultValue: { summary: 'button' } }
+      description: "The type attribute for the button",
+      control: "select",
+      options: ["button", "submit", "reset"],
+      table: { defaultValue: { summary: "button" } },
     },
   }}
 />
@@ -33,9 +40,9 @@ For user triggered actions
 
 <Canvas>
   <Story
-    name='Primary'
+    name="Primary"
     args={{
-      label: 'RUN',
+      label: "RUN",
     }}
   >
     {({ label, variant }) => `
@@ -48,10 +55,10 @@ For user triggered actions
 
 <Canvas>
   <Story
-    name='Inverse Primary'
+    name="Primary (outline)"
     args={{
-      label: 'RUN',
-      variant: 'inverse-primary'
+      label: "RUN",
+      variant: "outline-primary",
     }}
   >
     {({ label, variant }) => `
@@ -65,10 +72,44 @@ For user triggered actions
 
 <Canvas>
   <Story
-    name='Success'
+    name="Danger"
     args={{
-      label: 'SUCCESS',
-      variant: 'success',
+      label: "STOP",
+      variant: "danger",
+    }}
+  >
+    {({ label, variant }) => `
+      <v-button
+        variant='${variant}'
+        label='${label}'
+      />
+    `}
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story
+    name="Danger (outline)"
+    args={{
+      label: "SLOW DOWN",
+      variant: "outline-danger",
+    }}
+  >
+    {({ label, variant }) => `
+      <v-button
+        variant='${variant}'
+        label='${label}'
+      />
+    `}
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story
+    name="Success"
+    args={{
+      label: "SUCCESS",
+      variant: "success",
     }}
   >
     {({ label, variant }) => `
@@ -82,15 +123,15 @@ For user triggered actions
 
 <Canvas>
   <Story
-    name='Danger'
+    name="Success (outline)"
     args={{
-      label: 'STOP',
-      variant: 'danger',
+      label: "SUCCESS",
+      variant: "outline-success",
     }}
   >
     {({ label, variant }) => `
       <v-button
-        variant='${variant}'
+        variant="${variant}"
         label='${label}'
       />
     `}
@@ -99,27 +140,10 @@ For user triggered actions
 
 <Canvas>
   <Story
-    name='Danger (outline)'
+    name="Disabled"
     args={{
-      label: 'SLOW DOWN',
-      variant: 'outline-danger',
-    }}
-  >
-    {({ label, variant }) => `
-      <v-button
-        variant='${variant}'
-        label='${label}'
-      />
-    `}
-  </Story>
-</Canvas>
-
-<Canvas>
-  <Story
-    name='Disabled'
-    args={{
-      disabled: 'true',
-      label: 'RUN',
+      disabled: "true",
+      label: "RUN",
     }}
   >
     {({ label, disabled }) => `
@@ -133,10 +157,105 @@ For user triggered actions
 
 <Canvas>
   <Story
-    name='With title'
+    name="Disabled (outline)"
     args={{
-      label: 'RUN',
-      title: 'Run this command',
+      disabled: "true",
+      variant: "outline-primary",
+      label: "RUN",
+    }}
+  >
+    {({ label, disabled, variant }) => `
+      <v-button
+        label='${label}'
+        variant='${variant}'
+        disabled='${disabled}'
+      />
+    `}
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story
+    name="Disabled (danger)"
+    args={{
+      disabled: "true",
+      variant: "danger",
+      label: "RUN",
+    }}
+  >
+    {({ label, disabled, variant }) => `
+      <v-button
+        label='${label}'
+        variant='${variant}'
+        disabled='${disabled}'
+      />
+    `}
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story
+    name="Disabled (outline danger)"
+    args={{
+      disabled: "true",
+      variant: "outline-danger",
+      label: "RUN",
+    }}
+  >
+    {({ label, disabled, variant }) => `
+      <v-button
+        label='${label}'
+        variant='${variant}'
+        disabled='${disabled}'
+      />
+    `}
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story
+    name="Disabled (success)"
+    args={{
+      disabled: "true",
+      variant: "success",
+      label: "RUN",
+    }}
+  >
+    {({ label, disabled, variant }) => `
+      <v-button
+        label='${label}'
+        variant='${variant}'
+        disabled='${disabled}'
+      />
+    `}
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story
+    name="Disabled (outline success)"
+    args={{
+      disabled: "true",
+      variant: "outline-primary",
+      label: "RUN",
+    }}
+  >
+    {({ label, disabled, variant }) => `
+      <v-button
+        label='${label}'
+        variant='${variant}'
+        disabled='${disabled}'
+      />
+    `}
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story
+    name="With title"
+    args={{
+      label: "RUN",
+      title: "Run this command",
     }}
   >
     {({ label, title }) => `
@@ -150,12 +269,12 @@ For user triggered actions
 
 <Canvas>
   <Story
-    name='With tooltip'
+    name="With tooltip"
     args={{
-      label: 'Hug',
-      icon: 'naught',
-      disabled: 'true',
-      tooltip: 'Hugging is disabled',
+      label: "Hug",
+      icon: "naught",
+      disabled: "true",
+      tooltip: "Hugging is disabled",
     }}
   >
     {({ label, icon, tooltip, disabled }) => `
@@ -171,10 +290,10 @@ For user triggered actions
 
 <Canvas>
   <Story
-    name='With icon'
+    name="With icon"
     args={{
-      label: 'Refresh',
-      icon: 'refresh',
+      label: "Refresh",
+      icon: "refresh",
     }}
   >
     {({ label, icon }) => `
@@ -188,11 +307,49 @@ For user triggered actions
 
 <Canvas>
   <Story
-    name='Icon variant'
+    name="Icon variant"
     args={{
-      icon: 'trash',
-      variant: 'icon',
-      label: 'Delete component',
+      icon: "trash",
+      variant: "icon",
+      label: "Delete component",
+    }}
+  >
+    {({ icon, variant, label }) => `
+      <v-button
+        icon='${icon}'
+        label='${label}'
+        variant='${variant}'
+      />
+    `}
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story
+    name="Icon variant (danger)"
+    args={{
+      icon: "trash",
+      variant: "icon-danger",
+      label: "Delete component",
+    }}
+  >
+    {({ icon, variant, label }) => `
+      <v-button
+        icon='${icon}'
+        label='${label}'
+        variant='${variant}'
+      />
+    `}
+  </Story>
+</Canvas>
+
+<Canvas>
+  <Story
+    name="Icon variant (success)"
+    args={{
+      icon: "trash",
+      variant: "icon-success",
+      label: "Delete component",
     }}
   >
     {({ icon, variant, label }) => `
