@@ -407,20 +407,20 @@ function Ml(t, ...e) {
 }
 const Ti = typeof window < "u";
 let qt = Ti ? () => window.performance.now() : () => Date.now(), Pi = Ti ? (t) => requestAnimationFrame(t) : F;
-const et = /* @__PURE__ */ new Set();
+const tt = /* @__PURE__ */ new Set();
 function ji(t) {
-  et.forEach((e) => {
-    e.c(t) || (et.delete(e), e.f());
-  }), et.size !== 0 && Pi(ji);
+  tt.forEach((e) => {
+    e.c(t) || (tt.delete(e), e.f());
+  }), tt.size !== 0 && Pi(ji);
 }
 function Ol(t) {
   let e;
-  return et.size === 0 && Pi(ji), {
+  return tt.size === 0 && Pi(ji), {
     promise: new Promise((n) => {
-      et.add(e = { c: t, f: n });
+      tt.add(e = { c: t, f: n });
     }),
     abort() {
-      et.delete(e);
+      tt.delete(e);
     }
   };
 }
@@ -521,7 +521,7 @@ function We(t, e) {
   const n = t.$$.callbacks[e.type];
   n && n.slice().forEach((i) => i.call(this, e));
 }
-const it = [], Ee = [], pt = [], Jt = [], Ni = Promise.resolve();
+const lt = [], Ee = [], pt = [], Jt = [], Ni = Promise.resolve();
 let Tt = !1;
 function Li() {
   Tt || (Tt = !0, Ni.then(y));
@@ -537,18 +537,18 @@ let ht = 0;
 function y() {
   const t = st;
   do {
-    for (; ht < it.length; ) {
-      const e = it[ht];
+    for (; ht < lt.length; ) {
+      const e = lt[ht];
       ht++, rt(e), Pl(e.$$);
     }
-    for (rt(null), it.length = 0, ht = 0; Ee.length; )
+    for (rt(null), lt.length = 0, ht = 0; Ee.length; )
       Ee.pop()();
     for (let e = 0; e < pt.length; e += 1) {
       const n = pt[e];
       Ct.has(n) || (Ct.add(n), n());
     }
     pt.length = 0;
-  } while (it.length);
+  } while (lt.length);
   for (; Jt.length; )
     Jt.pop()();
   Tt = !1, Ct.clear(), rt(t);
@@ -625,7 +625,7 @@ function Fl(t, e) {
   n.fragment !== null && (ke(n.on_destroy), n.fragment && n.fragment.d(e), n.on_destroy = n.fragment = null, n.ctx = []);
 }
 function Il(t, e) {
-  t.$$.dirty[0] === -1 && (it.push(t), Li(), t.$$.dirty.fill(0)), t.$$.dirty[e / 31 | 0] |= 1 << e % 31;
+  t.$$.dirty[0] === -1 && (lt.push(t), Li(), t.$$.dirty.fill(0)), t.$$.dirty[e / 31 | 0] |= 1 << e % 31;
 }
 function be(t, e, n, i, l, r, o, s = [-1]) {
   const a = st;
@@ -716,7 +716,7 @@ const me = () => {
 }, { base: Zt = "", query: Gt = "", workers: vs = {} } = window.PRIME_CONFIG ?? {}, Vl = async () => {
   const t = new FontFace("icons", Zt ? `url(${Zt}/icons.woff2${Gt})` : `url(icons.woff2${Gt})`);
   await t.load(), document.fonts.add(t);
-}, Dl = "0.34.1", lt = `https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/${Dl}`, at = [], Dt = (t, e) => `http://definitions/${t}-${e}.json`, Di = (t = "") => t.split("/").pop(), Hl = (t, e) => {
+}, Dl = "0.34.1", et = `https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/${Dl}`, at = [], Dt = (t, e) => `http://definitions/${t}-${e}.json`, Di = (t = "") => t.split("/").pop(), Hl = (t, e) => {
   for (const n of Object.values(e.properties ?? []))
     n.type === "array" && n.items?.type ? n.description = `"array" of type "${n.items?.type}"` : n.type === "array" ? n.description = '"array" of type "object"' : n.description = `"${n.type}"`;
   return JSON.parse(JSON.stringify(e), (n, i) => {
@@ -1195,11 +1195,12 @@ const on = /* @__PURE__ */ new Set(), ir = (t) => {
   bt = "loading";
   const e = URL.createObjectURL(new Blob([`
     self.MonacoEnvironment = {
-      baseUrl: '${lt}/min/'
+      baseUrl: '${et}/min/'
     };
-    importScripts('${lt}/min/vs/base/worker/workerMain.js');
+    importScripts('${et}/min/vs/base/worker/workerMain.js');
+    importScripts('${et}/min/vs/language/json/jsonWorker.js');
   `], { type: "text/javascript" })), n = () => {
-    window.require.config({ paths: { vs: `${lt}/min/vs` } }), window.MonacoEnvironment = { getWorkerUrl: () => e }, window.require(["vs/editor/editor.main"], () => {
+    window.require.config({ paths: { vs: `${et}/min/vs` } }), window.MonacoEnvironment = { getWorkerUrl: () => e }, window.require(["vs/editor/editor.main"], () => {
       for (const i of on)
         i(window.monaco);
       bt = "loaded";
@@ -1207,7 +1208,7 @@ const on = /* @__PURE__ */ new Set(), ir = (t) => {
   };
   {
     const i = document.createElement("script");
-    i.addEventListener("load", n), i.async = !0, i.src = `${lt}/min/vs/loader.js`, document.head.append(i);
+    i.addEventListener("load", n), i.async = !0, i.src = `${et}/min/vs/loader.js`, document.head.append(i);
   }
 }, lr = (t, e, n) => t <= e ? e : t >= n ? n : t, wt = (t, e, n, i) => {
   const l = (t - e) / (n - e) * 100;
@@ -1243,7 +1244,7 @@ function or(t, e, n) {
   me();
   let b, h, g, v, _, M, S;
   const E = document.createElement("link");
-  E.rel = "stylesheet", E.href = `${lt}/min/vs/editor/editor.main.min.css`, Xe().shadowRoot.append(E);
+  E.rel = "stylesheet", E.href = `${et}/min/vs/editor/editor.main.min.css`, Xe().shadowRoot.append(E);
   const z = () => {
     if (!M)
       return;
@@ -3636,12 +3637,12 @@ function eo(t, e, n) {
     const Ce = z.children[0].children[U];
     el(Ce) === !1 && Ce.scrollIntoView();
   }, Oe = (W, Ce) => {
-    const { checked: nt } = Ce.target;
+    const { checked: it } = Ce.target;
     if (l === W) {
       Ce.preventDefault(), n(9, Y = !1);
       return;
     }
-    n(0, l = nt ? W : ""), n(9, Y = !1), S("input", { value: l });
+    n(0, l = it ? W : ""), n(9, Y = !1), S("input", { value: l });
   }, Ae = () => {
     n(18, U = -1);
   }, je = () => {
@@ -4435,7 +4436,7 @@ function ao(t, e, n) {
   function Ce(N) {
     We.call(this, t, N);
   }
-  function nt(N) {
+  function it(N) {
     We.call(this, t, N);
   }
   function St(N) {
@@ -4511,7 +4512,7 @@ function ao(t, e, n) {
     Y,
     U,
     Ce,
-    nt,
+    it,
     St,
     H,
     fe,
@@ -5177,7 +5178,7 @@ function po(t, e, n) {
       value: pe === 0 ? R : V,
       values: V ? [R, V].map((H) => ve(H, p, A)) : void 0
     });
-  }, nt = (H) => C(H);
+  }, it = (H) => C(H);
   function St(H) {
     Ee[H ? "unshift" : "push"](() => {
       s = H, n(1, s);
@@ -5232,7 +5233,7 @@ function po(t, e, n) {
     I,
     K,
     q,
-    nt,
+    it,
     St
   ];
 }
@@ -6553,7 +6554,7 @@ function ct(t) {
     y: r
   };
 }
-function tt(t, e, n, i) {
+function nt(t, e, n, i) {
   var l, r, o, s;
   e === void 0 && (e = !1), n === void 0 && (n = !1);
   const a = t.getBoundingClientRect();
@@ -6584,10 +6585,10 @@ function Et(t) {
   };
 }
 function pl(t) {
-  return tt(Je(t)).left + Et(t).scrollLeft;
+  return nt(Je(t)).left + Et(t).scrollLeft;
 }
 function ts(t, e, n) {
-  const i = Ie(e), l = Je(e), r = tt(t, !0, n === "fixed", e);
+  const i = Ie(e), l = Je(e), r = nt(t, !0, n === "fixed", e);
   let o = {
     scrollLeft: 0,
     scrollTop: 0
@@ -6598,7 +6599,7 @@ function ts(t, e, n) {
   };
   if (i || !i && n !== "fixed")
     if ((Ye(e) !== "body" || xt(l)) && (o = Et(e)), Ie(e)) {
-      const a = tt(e, !0);
+      const a = nt(e, !0);
       s.x = a.x + e.clientLeft, s.y = a.y + e.clientTop;
     } else
       l && (s.x = pl(l));
@@ -6640,7 +6641,7 @@ function is(t) {
       width: t.offsetWidth,
       height: t.offsetHeight
     };
-  const e = tt(t);
+  const e = nt(t);
   return {
     width: e.width,
     height: e.height
@@ -6667,7 +6668,7 @@ function ls(t) {
     y: 0
   };
   if ((l || !l && i !== "fixed") && ((Ye(n) !== "body" || xt(r)) && (o = Et(n)), Ie(n))) {
-    const c = tt(n);
+    const c = nt(n);
     s = ct(n), a.x = c.x + n.clientLeft, a.y = c.y + n.clientTop;
   }
   return {
@@ -6715,7 +6716,7 @@ function yl(t, e) {
   return l ? e.concat(r, r.visualViewport || [], xt(i) ? i : []) : e.concat(i, yl(i));
 }
 function ss(t, e) {
-  const n = tt(t, !0, e === "fixed"), i = n.top + t.clientTop, l = n.left + t.clientLeft, r = Ie(t) ? ct(t) : {
+  const n = nt(t, !0, e === "fixed"), i = n.top + t.clientTop, l = n.left + t.clientLeft, r = Ie(t) ? ct(t) : {
     x: 1,
     y: 1
   }, o = t.clientWidth * r.x, s = t.clientHeight * r.y, a = l * r.x, c = i * r.y;
